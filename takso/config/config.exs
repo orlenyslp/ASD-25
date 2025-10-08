@@ -20,7 +20,7 @@ config :takso, TaksoWeb.Endpoint,
     layout: false
   ],
   pubsub_server: Takso.PubSub,
-  live_view: [signing_salt: "I/ASTdQJ"]
+  live_view: [signing_salt: "5ySWXnHA"]
 
 # Configures the mailer
 #

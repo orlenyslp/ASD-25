@@ -1,6 +1,5 @@
 defmodule TaksoWeb.UserController do
   use TaksoWeb, :controller
-
   alias Takso.Repo
   alias Takso.Accounts.User
 

@@ -7,7 +7,7 @@ defmodule TaksoWeb.Endpoint do
   @session_options [
     store: :cookie,
     key: "_takso_key",
-    signing_salt: "4zKqGIjp",
+    signing_salt: "JdQqGaRu",
     same_site: "Lax"
   ]
 

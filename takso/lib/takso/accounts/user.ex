@@ -10,7 +10,6 @@ defmodule Takso.Accounts.User do
     timestamps(type: :utc_datetime)
   end
 
-  @doc false
   def changeset(user, attrs) do
     user
     |> cast(attrs, [:name, :username, :password])

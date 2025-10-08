@@ -17,7 +17,7 @@ config :takso, Takso.Repo,
 # you can enable the server option below.
 config :takso, TaksoWeb.Endpoint,
   http: [ip: {127, 0, 0, 1}, port: 4002],
-  secret_key_base: "0e2rByGTMX6f/e6kUWmoCE9GCtt27v/glFjdFlPL0FWa4rrLX+pNpFTWAR6gZo1M",
+  secret_key_base: "EVLr2f/3wNNcl/H5Do5T9+BRl27BYy/PnxwK/zwlGtPIhME4Bjwv6NsX+HNNuM4f",
   server: false
 
 # In test we don't send emails
