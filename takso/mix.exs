@@ -10,6 +10,7 @@ defmodule Takso.MixProject do
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps(),
+      preferred_cli_env: ["white_bread.run": :test],  # Add this line
       compilers: [:phoenix_live_view] ++ Mix.compilers(),
       listeners: [Phoenix.CodeReloader]
     ]
@@ -65,7 +66,10 @@ defmodule Takso.MixProject do
       {:gettext, "~> 0.26"},
       {:jason, "~> 1.2"},
       {:dns_cluster, "~> 0.2.0"},
-      {:bandit, "~> 1.5"}
+      {:bandit, "~> 1.5"},
+      {:gherkin, "~> 1.4.0"},  # Old gherkin dependency to ensure compatibility with white_bread
+      {:white_bread, "~> 4.5", only: [:test]},  # Latest white_bread dependency
+      {:hound, "~> 1.0"}
     ]
   end
 
