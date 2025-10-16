@@ -4,8 +4,11 @@
         <:subtitle>Use this form to order a taxi.</:subtitle>
     </.header>
 
-    <input id="pickup_address">
-    <input id="dropoff_address">
-    <button id="submit_button">Submit</button>
+    <form method="post" action="/bookings">
+        <input type="hidden" name="_csrf_token" value={get_csrf_token()}>
+        <input type="text" id="pickup_address" name="pickup_address">
+        <input type="text" id="dropoff_address" name="dropoff_address">
+        <button id="submit_button">Submit</button>
+    </form>
 
 </Layouts.app>

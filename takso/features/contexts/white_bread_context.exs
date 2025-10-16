@@ -48,6 +48,7 @@ defmodule WhiteBreadContext do
   end)
 
   then_(~r/^I should receive a confirmation message$/, fn state ->
+    :timer.sleep(500)
     assert visible_in_page?(~r/Your taxi will arrive in \d+ minutes/)
     {:ok, state}
   end)
