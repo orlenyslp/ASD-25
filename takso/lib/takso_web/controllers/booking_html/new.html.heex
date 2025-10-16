@@ -4,11 +4,13 @@
         <:subtitle>Use this form to order a taxi.</:subtitle>
     </.header>
 
-    <form method="post" action="/bookings">
-        <input type="hidden" name="_csrf_token" value={get_csrf_token()}>
-        <input type="text" id="pickup_address" name="pickup_address">
-        <input type="text" id="dropoff_address" name="dropoff_address">
-        <button id="submit_button">Submit</button>
-    </form>
+    <.form :let={f} for={@changeset} action={~p"/bookings"}>
+        <.input field={f[:pickup_address]} type="text" label="Pickup address" />
+        <.input field={f[:dropoff_address]} type="text" label="Dropoff address" />
+        <footer>
+            <.button variant="primary" id="submit_button">Book taxi</.button>
+            <.button href={~p"/bookings"}>Cancel</.button>
+        </footer> 
+    </.form>
 
 </Layouts.app>

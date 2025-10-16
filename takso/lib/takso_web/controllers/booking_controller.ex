@@ -1,14 +1,15 @@
 defmodule TaksoWeb.BookingController do
   use TaksoWeb, :controller
   import Ecto.Query, only: [from: 2]
-  alias Takso.{Repo, Sales.Taxi}
+  alias Takso.{Repo, Sales.Taxi, Sales.Booking}
 
   # We added this function to handle the GET query to "/bookings/new" as
   # specified by the router. If you run "mix phx.routes" you'll see that
   # a GET query to "/bookings/new" get handled by "BookingController"
   # through the method ":new", i.e., this function.
   def new(conn, _params) do
-    render(conn, "new.html")
+    changeset = Booking.changeset(%Booking{}, %{})
+    render(conn, "new.html", changeset: changeset)
   end
 
   # Same than before but handling the query GET to "/bookings" (:index).
@@ -17,21 +18,38 @@ defmodule TaksoWeb.BookingController do
   end
 
   # Same than before but handling the query POST to "/bookings" (:create).
-  def create(conn, params) do
-    # Query the database to retrieve the list of available taxis
-    query = from(t in Taxi, where: t.status == "available", select: t)
-    available_taxis = Repo.all(query)
-    # If there are available taxis
-    if length(available_taxis) > 0 do
-      # Redirect informing the taxi is coming
-      conn
-      |> put_flash(:info, "Your taxi will arrive in 15 minutes.")
-      |> redirect(to: ~p"/bookings")
+  def create(conn, %{"booking" => booking_params}) do
+    # Create changeset for the booking
+    changeset = Booking.changeset(%Booking{}, booking_params)
+
+    if changeset.valid? do
+      # Valid, query the database to retrieve the list of available taxis
+      query = from(t in Taxi, where: t.status == "available", select: t)
+      available_taxis = Repo.all(query)
+      # If there are available taxis
+      if length(available_taxis) > 0 do
+        # Try to insert the booking in the DB
+        case Repo.insert(changeset) do
+          {:ok, _booking} ->
+            conn
+            |> put_flash(:info, "Your taxi will arrive in 15 minutes.")
+            |> redirect(to: ~p"/bookings")
+
+          {:error, %Ecto.Changeset{} = changeset} ->
+            render(conn, "new.html", changeset: changeset)
+        end
+      else
+        # Redirect informing there are no taxis
+        conn
+        |> put_flash(:error, "At present, there is no taxi available!")
+        |> redirect(to: ~p"/bookings")
+      end
     else
-      # Redirect informing there are no taxis
-      conn
-      |> put_flash(:error, "At present, there is no taxi available!")
-      |> redirect(to: ~p"/bookings")
+      # Invalid, report error
+      #   Call to "Repo.insert/1" knowing it is going to fail
+      #   only to add the error report in the changeset
+      {:error, changeset} = Repo.insert(changeset)
+      render(conn, "new.html", changeset: changeset)
     end
   end
 end

@@ -44,8 +44,8 @@ defmodule WhiteBreadContext do
   end)
 
   and_(~r/^I enter the booking information$/, fn state ->
-    fill_field({:id, "pickup_address"}, state[:pickup_address])
-    fill_field({:id, "dropoff_address"}, state[:dropoff_address])
+    fill_field({:id, "booking_pickup_address"}, state[:pickup_address])
+    fill_field({:id, "booking_dropoff_address"}, state[:dropoff_address])
     {:ok, state}
   end)
 
@@ -60,9 +60,12 @@ defmodule WhiteBreadContext do
     {:ok, state}
   end)
 
-  then_(~r/^I should receive a rejection message$/, fn state ->
-    :timer.sleep(500)
-    assert visible_in_page?(~r/At present, there is no taxi available!/)
-    {:ok, state}
-  end)
+  then_(
+    ~r/^I should receive an error saying "(?<message>[^"]+)"$/,
+    fn state, %{message: message} ->
+      :timer.sleep(500)
+      assert visible_in_page?(~r/#{message}/)
+      {:ok, state}
+    end
+  )
 end
