@@ -19,7 +19,7 @@ defmodule TaksoWeb.BookingController do
 
   # Same than before but handling the query POST to "/bookings" (:create).
   def create(conn, %{"booking" => booking_params}) do
-    # Create changeset for the booking
+    # Create changeset for the booking (to validate)
     changeset = Booking.changeset(%Booking{}, booking_params)
 
     if changeset.valid? do
@@ -28,8 +28,18 @@ defmodule TaksoWeb.BookingController do
       available_taxis = Repo.all(query)
       # If there are available taxis
       if length(available_taxis) > 0 do
-        # Try to insert the booking in the DB
-        case Repo.insert(changeset) do
+        # Make association and try to insert the booking in the DB
+        # Retrieve the current user from the connection
+        user = conn.assigns.current_user
+
+        booking_assoc =
+          Ecto.build_assoc(
+            user,
+            :bookings,
+            Enum.map(booking_params, fn {key, value} -> {String.to_atom(key), value} end)
+          )
+
+        case Repo.insert(booking_assoc) do
           {:ok, _booking} ->
             conn
             |> put_flash(:info, "Your taxi will arrive in 15 minutes.")

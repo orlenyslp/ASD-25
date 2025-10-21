@@ -1,0 +1,16 @@
+<Layouts.app flash={@flash} current_user={@current_user}>
+
+  <.header>
+    Log in
+    <:subtitle>Use this form to log in through username and password.</:subtitle>
+  </.header>
+
+  <.form :let={f} for={} action={~p"/sessions"}>
+    <.input field={f[:username]} type="text" label="Username" />
+    <.input field={f[:password]} type="text" label="Password" />
+    <footer>
+        <.button variant="primary" id="submit_button">Log in</.button>
+    </footer> 
+  </.form>
+
+</Layouts.app>
