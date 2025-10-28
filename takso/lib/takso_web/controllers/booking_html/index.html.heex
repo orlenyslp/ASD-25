@@ -1,8 +1,16 @@
 <Layouts.app flash={@flash} current_user={@current_user}>
-    <.header>
-        Bookings
-    </.header>
+    <h2>List of bookings</h2>
 
-    <h2>Site under construction.</h2>
+    <.table id="bookings-list" rows={@bookings}>
+        <:col :let={booking} label="Pickup Address">
+            <%= booking.pickup_address %>
+        </:col>
+        <:col :let={booking} label="Dropoff Address">
+            <%= booking.dropoff_address %>
+        </:col>
+        <:col :let={booking} label="Status">
+            <%= booking.status %>
+        </:col>
+    </.table>
 
 </Layouts.app>

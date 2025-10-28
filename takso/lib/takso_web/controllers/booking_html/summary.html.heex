@@ -1,0 +1,10 @@
+<Layouts.app flash={@flash} current_user={@current_user}>
+  <.header>
+    Bookings Summary
+  </.header>
+
+  <.table id="booking-summary" rows={@tuples}>
+    <:col :let={tuple} label="Driver">{tuple.driver}</:col>
+    <:col :let={tuple} label="#Trips">{tuple.trips}</:col>
+  </.table>
+</Layouts.app>
